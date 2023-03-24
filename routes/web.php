@@ -20,6 +20,7 @@ Route::get('/', function () {
 // Category dan Product routes
 Route::resource('categories', 'App\Http\Controllers\CategoryController');
 Route::resource('products', 'App\Http\Controllers\ProductController');
+Route::resource('carts', 'App\Http\Controllers\CartController');
 
 // Cart routes
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');

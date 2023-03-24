@@ -3,50 +3,45 @@
 @section('title', 'Cart')
 
 @section('content')
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <h1>Cart</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Cart</div>
+
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($carts as $cart)
+                                    <tr>
+                                        <td>{{ $cart->id }}</td>
+                                        <td>{{ $cart->product->name }}</td>
+                                        <td>{{ $cart->quantity }}</td>
+                                        <td>{{ $cart->total_price }}</td>
+                                        <td>
+                                            <form action="{{ route('carts.destroy', $cart->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 text-right">
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Continue Shopping</a>
-        </div>
+
     </div>
-    @if (isset($cart) && count($cart) > 0)
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($cart as $key => $item)
-                    <tr>
-                        <th scope="row">{{ $key + 1 }}</th>
-                        <td>{{ $item['name'] }}</td>
-                        <td>{{ $item['quantity'] }}</td>
-                        <td>Rp{{ number_format($item['price'], 0, ',', '.') }}</td>
-                        <td>Rp{{ number_format($item['total_price'], 0, ',', '.') }}</td>
-                        <td>
-                            <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="4" class="text-right font-weight-bold">Total Price:</td>
-                    <td colspan="2">Rp{{ number_format($total_price, 0, ',', '.') }}</td>
-                </tr>
-            </tbody>
-        </table>
-    @else
-        <p>Your cart is empty.</p>
-    @endif
 @endsection
